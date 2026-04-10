@@ -1,0 +1,24 @@
+artifact_path: file:C:/Users/HP/OneDrive/Desktop/CUCEA 2025 B/2do Semestre/Programacion
+  II/proyecto_challenge/Basico/mlruns/1/models/m-03c94ededa9640ba871211f74cedbdd6/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.12
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.11.1
+model_id: m-03c94ededa9640ba871211f74cedbdd6
+model_size_bytes: 142493
+model_uuid: m-03c94ededa9640ba871211f74cedbdd6
+prompts: null
+run_id: 1df306ea7bea4454a5163c7ed403219a
+utc_time_created: '2026-04-10 22:49:30.671533'
