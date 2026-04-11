@@ -1,0 +1,19 @@
+# --- Data Processing ---
+pandas
+numpy
+
+# --- NLP (Natural Language Processing) ---
+spacy
+nltk
+textblob
+
+# --- Machine Learning & MLOps ---
+scikit-learn
+mlflow
+
+# --- Web Scraping ---
+playwright
+
+# --- Data Visualization ---
+matplotlib
+seaborn

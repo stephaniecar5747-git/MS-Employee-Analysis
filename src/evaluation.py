@@ -15,7 +15,7 @@ except LookupError:
 def run_evaluation():
     # 1. Load data
     if not os.path.exists("data/processed_en.csv"):
-        print("❌ Error: No se encuentra el archivo procesado.")
+        print("Error: processed file not found.")
         return
     
     df = pd.read_csv("data/processed_en.csv")
