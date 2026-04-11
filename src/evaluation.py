@@ -6,14 +6,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# Asegurar recursos
+# Secure resources
 try:
     nltk.data.find('sentiment/vader_lexicon')
 except LookupError:
     nltk.download('vader_lexicon')
 
 def run_evaluation():
-    # 1. Cargar datos
+    # 1. Load data
     if not os.path.exists("data/processed_en.csv"):
         print("❌ Error: No se encuentra el archivo procesado.")
         return
@@ -21,52 +21,52 @@ def run_evaluation():
     df = pd.read_csv("data/processed_en.csv")
     vader = SentimentIntensityAnalyzer()
 
-    # 2. Funciones de Sentimiento
+    # 2. Sentiment Functions
     def get_textblob_sentiment(text):
         return TextBlob(str(text)).sentiment.polarity
 
-    # 3. Cálculo de métricas
+    # 3. Metrics calculation
     df['pros_vader'] = df['pros'].apply(lambda x: vader.polarity_scores(str(x))['compound'])
     df['cons_vader'] = df['cons'].apply(lambda x: vader.polarity_scores(str(x))['compound'])
     df['cons_textblob'] = df['cons'].apply(get_textblob_sentiment)
 
-    # Etiquetas simplificadas
-    df['sentiment_final'] = df['cons_vader'].apply(lambda x: 'Positivo' if x >= 0.05 else ('Negativo' if x <= -0.05 else 'Neutral'))
+    # Simplified labels
+    df['sentiment_final'] = df['cons_vader'].apply(lambda x: 'Positive' if x >= 0.05 else ('Negative' if x <= -0.05 else 'Neutral'))
 
-    # --- REPORTE IMPRESO EN CONSOLA ---
+    # --- COMPLETE REPORT ---
     print("\n" + "="*40)
-    print("📊 RESUMEN DE MÉTRICAS DE LA EMPRESA")
+    print("SUMMARY OF COMPANY METRICS")
     print("="*40)
-    print(f"Total de reseñas analizadas: {len(df)}")
-    print(f"Sentimiento promedio (Pros): {df['pros_vader'].mean():.2f}")
-    print(f"Sentimiento promedio (Cons): {df['cons_vader'].mean():.2f}")
-    print("\nDistribución de Sentimiento en Cons:")
+    print(f"Total reviews analyzed: {len(df)}")
+    print(f"Average sentiment (Pros): {df['pros_vader'].mean():.2f}")
+    print(f"Average sentiment (Cons): {df['cons_vader'].mean():.2f}")
+    print("\nSentiment distribution in Cons:")
     print(df['sentiment_final'].value_counts(normalize=True) * 100)
     print("="*40 + "\n")
 
-    # --- VISUALIZACIONES ---
+    # --- VISUALIZATIONS ---
     plt.figure(figsize=(12, 5))
 
-    # Gráfico 1: Distribución de Sentimientos (Barras)
+    # Graph 1: Sentiment Distribution (Bars)
     plt.subplot(1, 2, 1)
     sns.countplot(data=df, x='sentiment_final', palette='viridis')
-    plt.title('Distribución de Sentimiento (Cons)')
-    plt.ylabel('Cantidad de Reseñas')
+    plt.title('Sentiment Distribution (Cons)')
+    plt.ylabel('Number of reviews')
 
-    # Gráfico 2: Comparación Pros vs Cons (Boxplot)
+    # Graph 2: Comparison of Pros vs Cons (Boxplot)
     plt.subplot(1, 2, 2)
-    sentiment_data = df[['pros_vader', 'cons_vader']].melt(var_name='Tipo', value_name='Score')
-    sns.boxplot(data=sentiment_data, x='Tipo', y='Score', palette='Set2')
-    plt.title('Rango de Sentimiento: Pros vs Cons')
+    sentiment_data = df[['pros_vader', 'cons_vader']].melt(var_name='Type', value_name='Score')
+    sns.boxplot(data=sentiment_data, x='Type', y='Score', palette='Set2')
+    plt.title('Sentiment Range: Pros vs Cons')
     
     plt.tight_layout()
-    plt.savefig('data/reporte_visual.png') # Guarda la imagen para el MLOps
-    print("📈 Gráfico guardado en 'data/reporte_visual.png'")
+    plt.savefig('data/visual_report.png') # Guarda la imagen para el MLOps
+    print("Graph saved in 'data/visual_report.png'")
     plt.show()
 
-    # 4. Guardar resultados
+    # 4. Save results
     df.to_csv("data/final_sentiment_report.csv", index=False)
-    print("✅ Evaluación completa. Resultados guardados.")
+    print("Complete Evaluation. Results saved.")
 
 if __name__ == "__main__":
     run_evaluation()

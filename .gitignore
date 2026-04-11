@@ -1,0 +1,15 @@
+# MLflow data
+mlruns/
+mlflow.db
+
+# Datos procesados y crudos
+data/*.csv
+data/*.png
+
+# Entornos virtuales
+venv/
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
